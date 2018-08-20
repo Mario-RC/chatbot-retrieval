@@ -12,7 +12,8 @@ from models.dual_encoder import dual_encoder_model
 tf.flags.DEFINE_string("test_file", "./data/test.tfrecords", "Path of test data in TFRecords format")
 tf.flags.DEFINE_string("model_dir", None, "Directory to load model checkpoints from")
 tf.flags.DEFINE_integer("loglevel", 20, "Tensorflow log level")
-tf.flags.DEFINE_integer("test_batch_size", 16, "Batch size for testing")
+tf.flags.DEFINE_integer("test_batch_size", 16, "Batch size for testing") # tiene que ser igual que en udc_hparams.py
+# default = 128
 FLAGS = tf.flags.FLAGS
 
 if not FLAGS.model_dir:
@@ -35,5 +36,11 @@ if __name__ == "__main__":
     batch_size=FLAGS.test_batch_size,
     num_epochs=1)
 
+  starttime = time.time()
+
   eval_metrics = udc_metrics.create_evaluation_metrics()
-  estimator.evaluate(input_fn=input_fn_test, steps=None, metrics=eval_metrics)
+  estimator.evaluate(input_fn=input_fn_test, steps=61, metrics=eval_metrics)
+  # default: steps=None 
+
+  endtime = time.time()
+  print("[Time]", endtime - starttime,"sec")

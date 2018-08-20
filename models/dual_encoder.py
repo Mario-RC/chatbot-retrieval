@@ -8,7 +8,7 @@ def get_embeddings(hparams):
   if hparams.glove_path and hparams.vocab_path:
     tf.logging.info("Loading Glove embeddings...")
     vocab_array, vocab_dict = helpers.load_vocab(hparams.vocab_path)
-    glove_vectors, glove_dict = helpers.load_glove_vectors(hparams.glove_path, vocab=set(vocab_array))
+    glove_vectors, glove_dict = helpers.load_glove_vectors(hparams.glove_path, vocab = set(vocab_array))
     initializer = helpers.build_initial_embedding_matrix(vocab_dict, glove_dict, glove_vectors, hparams.embedding_dim)
   else:
     tf.logging.info("No glove/vocab path specificed, starting with random embeddings.")
@@ -34,7 +34,7 @@ def dual_encoder_model(
 
   # Embed the context and the utterance
   context_embedded = tf.nn.embedding_lookup(
-      embeddings_W, context, name="embed_context")
+      embeddings_W, context, name ="embed_context")
   utterance_embedded = tf.nn.embedding_lookup(
       embeddings_W, utterance, name="embed_utterance")
 
@@ -42,7 +42,7 @@ def dual_encoder_model(
   # Build the RNN
   with tf.variable_scope("rnn") as vs:
     # We use an LSTM Cell
-    cell = tf.nn.rnn_cell.LSTMCell(
+    cell = tf.nn.rnn_cell.LSTMCell( ## aqui se crea la red https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/LSTMCell
         hparams.rnn_dim,
         forget_bias=2.0,
         use_peepholes=True,
